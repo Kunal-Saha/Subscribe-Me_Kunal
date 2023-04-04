@@ -157,6 +157,13 @@ class Subscribe_me_Kunal {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		// $CUSTOM
+		// Menu page in admin Menu
+		$this->loader->add_action('admin_menu', $plugin_admin, 'subscribe_me_kunal_menu_page');
+
+		// settings fields of submenu page settings
+		$this->loader->add_action('admin_init', $plugin_admin, 'reg_settings');
+
 	}
 
 	/**
