@@ -73,6 +73,13 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-subscribe_me-kunal.php';
  *
  * @since    1.0.0
  */
+
+function remove_schedule()
+{
+	wp_clear_scheduled_hook('sendemail');
+}
+register_deactivation_hook(__FILE__, 'remove_schedule');
+
 function run_subscribe_me_kunal() {
 
 	$plugin = new Subscribe_me_Kunal();
