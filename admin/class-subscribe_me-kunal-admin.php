@@ -129,4 +129,53 @@ class Subscribe_me_Kunal_Admin {
 		);
 	}
 
+	function subscribe_me_kunal_menu_page_callback()
+	{
+
+?>
+		<div class="wrap">
+			<h1 class="my-plugin-title"><?php esc_html_e(get_admin_page_title()); ?></h1>
+			<form method="post" action="options.php">
+				<?php
+				settings_fields('my_plugin_settings_group');
+				do_settings_sections('subscribe-me-settings');
+				?>
+				<?php submit_button('Click to Save Changes'); ?>
+			</form>
+		</div>
+	<?php
+
+		$data = get_option('my_sub_email', array());
+		print_r($data);
+	}
+
+	function subscribers_callback()
+	{
+	?>
+		<h1 class="my-plugin-title"><?php esc_html_e(get_admin_page_title()); ?></h1>
+		<br><br>
+		<h1 class="my-plugin-title">Subscribers</h1>
+		<br><br>
+		<div class="form-container">
+			<?php
+			menu_page_html();
+			?>
+		</div>
+	<?php
+	}
+
+	function reg_settings()
+	{
+		register_setting('my_plugin_settings_group', 'no_of_posts');
+		add_settings_section('subs_settings', 'Subscription Mail Settings', '', 'subscribe-me-settings');
+		add_settings_field('no_of_posts', 'No of Posts', array($this, 'no_of_posts_callback'), 'subscribe-me-settings', 'subs_settings');
+	}
+
+	public function no_of_posts_callback()
+	{
+	?>
+		<input type="text" name="no_of_posts" value="<?php echo esc_attr(get_option('no_of_posts')) ?>">
+<?php
+	}
+
 }
