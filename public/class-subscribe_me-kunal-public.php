@@ -100,4 +100,61 @@ class Subscribe_me_Kunal_Public {
 
 	}
 
+	function call_shortcode()
+	{
+		add_shortcode('subscribe-me', array($this, 'subscribe_me__shortcode'));
+	}
+
+	function subscribe_me__shortcode()
+	{
+		// Code to generate the form HTML goes here
+		$form_html = '<form class="subscribe-me-form" method="post">
+                      <legend>Subscribe to Newsletter</legend>
+					  <input type="hidden" name="action" value="subs_form">
+                      <label for="email">Email</label>
+                      <input type="email" id="email" name="email">
+                      <br>
+                      <input type="submit" name="submit" id="subscribe-button" value="Subscribe"/>
+                  </form>';
+
+
+
+		// Return the form HTML
+		return $form_html;
+	}
+
+	// Save subscriber email to database
+	function register_subscriber()
+	{
+		//To check input pattern 
+		if (isset($_POST['email'])) {
+			$email = sanitize_email($_POST['email']);
+			$pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
+
+			if (preg_match($pattern, $email)) {
+				if (isset($_POST['submit'])) {
+
+					$my_sub_email = get_option('my_sub_email');
+
+					if (!$my_sub_email) {
+						$my_sub_email = array();
+					}
+
+					if (in_array($email, $my_sub_email)) {
+						echo '<script>alert("You are already subscribed!");</script>';
+					} else {
+						$my_sub_email[] = $email;
+						update_option('my_sub_email', $my_sub_email);
+
+						// Display a success message
+						echo '<script>alert("You have been subscribed Successfully!");</script>';
+					}
+				}
+			} else {
+				//For invalid email
+				echo '<script>alert("Please Enter a valid email!");</script>';
+			}
+		}
+	}
+
 }
