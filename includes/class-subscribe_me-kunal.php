@@ -180,6 +180,17 @@ class Subscribe_me_Kunal {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
+		// $CUSTOM
+		//To define shortcode
+		$this->loader->add_action('init', $plugin_public, 'call_shortcode');
+
+		//To add subscriber to the database
+		$this->loader->add_action('init', $plugin_public, 'register_subscriber');
+
+		$this->loader->add_filter('cron_schedules', $plugin_public, 'my_cron_schedules');
+		$this->loader->add_action('init', $plugin_public, 'schedule_email');
+		$this->loader->add_action('send_email_cron_hook', $plugin_public, 'send_mail');
+
 	}
 
 	/**
