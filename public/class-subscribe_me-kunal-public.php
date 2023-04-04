@@ -204,6 +204,36 @@ class Subscribe_me_Kunal_Public {
 		return $mail_list;
 	}
 
-	
+	// Cron scheduling and mail scheduling
+
+	function my_cron_schedules($schedules)
+	{
+		if (!isset($schedules["1min"])) {
+			$schedules["1min"] = array(
+				'interval' => 60,
+				'display' => __('Once every minutes')
+			);
+		}
+
+		if (!isset($schedules["5min"])) {
+			$schedules["5min"] = array(
+				'interval' => 5 * 60,
+				'display' => __('Once every 5 minutes')
+			);
+		}
+
+		return $schedules;
+	}
+
+	// this function decides the timings of the mail
+	// here you can Test the mail.
+	function schedule_email()
+	{
+		if (!wp_next_scheduled('send_email_cron_hook')) {
+			// Convert the time to the UTC timestamp
+			$timestamp = strtotime('7:30pm GMT+5:30');
+			wp_schedule_event($timestamp, 'daily', 'send_email_cron_hook');
+		}
+	}
 
 }
