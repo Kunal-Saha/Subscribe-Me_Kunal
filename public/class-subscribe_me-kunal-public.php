@@ -157,4 +157,53 @@ class Subscribe_me_Kunal_Public {
 		}
 	}
 
+	function send_mail()
+	{
+		$to = implode(',', get_option('my_sub_email'));
+		$subject = 'Successfully subscribed to ' . the_title() . ' newsletter';
+		$summary = $this->get_daily_post_details();
+		$message = 'You will get our daily feeds right into your inbox. Enjoy!!!';
+		$message .= "\n\n";
+		$message .= "Here are our Top latest Posts";
+		$message .= "\n";
+
+		foreach ($summary as $post_data) {
+			$message .= 'Title: ' . $post_data['title'] . "\n";
+			$message .= 'URL: ' . $post_data['url'] . "\n";
+			$message .= "\n";
+		}
+
+		$headers = array(
+			'From: dev-email@wpengine.local',
+			'Content-Type: text/html; charset=UTF-8'
+		);
+
+		wp_mail($to, $subject, $message, $headers);
+	}
+
+	function get_daily_post_details()
+	{
+		//To send latest n posts 
+		$args = array(
+			'post_type' => 'post',
+			'posts_per_page' => get_option('no_of_posts'),
+			'post_status' => 'publish'
+		);
+
+		$query = new WP_Query($args);
+		$posts = $query->posts;
+		$mail_list = array();
+
+		foreach ($posts as $post) {
+			$post_data = array(
+				'title' => $post->post_title,
+				'url' => get_permalink($post->ID),
+			);
+			array_push($mail_list, $post_data);
+		}
+		return $mail_list;
+	}
+
+	
+
 }
