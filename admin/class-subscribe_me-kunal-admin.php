@@ -52,6 +52,10 @@ class Subscribe_me_Kunal_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		// $CUSTOM
+		require_once(dirname(__FILE__) . '/partials/subscribe_me-kunal-admin-display.php');
+		require_once(dirname(__FILE__) . '/../subscribe_me-kunal.php');
+
 	}
 
 	/**
@@ -98,6 +102,31 @@ class Subscribe_me_Kunal_Admin {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/subscribe_me-kunal-admin.js', array( 'jquery' ), $this->version, false );
 
+	}
+
+	// $CUSTOM
+
+	// Menu Page
+	function subscribe_me_kunal_menu_page()
+	{
+		add_menu_page(
+			__('Subscribe Me', 'subscribe-Me'),
+			__('Subscribe Me', 'subscribe-Me-Kunal'),
+			'manage_options',
+			'subscribe-me-kunal-menu',
+			array($this, 'subscribers_callback'),
+			'dashicons-email-alt',
+			40
+		);
+
+		add_submenu_page(
+			'subscribe-me-kunal-menu',
+			__('Settings', 'subscribe-Me'),
+			__('Settings', 'subscribe-Me'),
+			'manage_options',
+			'subscribe-me-settings',
+			array($this, 'subscribe_me_kunal_menu_page_callback'),
+		);
 	}
 
 }
